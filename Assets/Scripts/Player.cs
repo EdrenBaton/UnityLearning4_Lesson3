@@ -13,12 +13,15 @@ namespace Asteroids
         private Camera _camera;
         private Ship _ship;
 
+        private BulletPool _bulletPool;
+
         private void Start()
         {
             _camera = Camera.main;
             var moveTransform = new AccelerationMove(transform, _speed, _acceleration);
             var rotation = new RotationShip(transform);
             _ship = new Ship(moveTransform, rotation);
+            _bulletPool = new BulletPool(10, _barrel.position, _barrel.up * _force);
         }
 
         private void Update()
@@ -40,8 +43,7 @@ namespace Asteroids
 
             if (Input.GetButtonDown("Fire1"))
             {
-                var temAmmunition = Instantiate(_bullet, _barrel.position, _barrel.rotation);
-                temAmmunition.AddForce(_barrel.up * _force);
+                _bulletPool.GetFromPool("Bullet");
             }
         }
 
