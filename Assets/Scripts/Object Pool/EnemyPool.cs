@@ -28,6 +28,7 @@ namespace Asteroids.Object_Pool
                 case "Asteroid1":
                 case "Asteroid2":
                     result = (Enemy) GetFromPoolList(GetPoolList(type), type);
+                    result.Name = type;
                     ActivatePoolObject(result.transform,
                         Random.insideUnitCircle * _respawnRadius,
                         Random.insideUnitCircle * Random.Range(_asteroidForceMin, _asteroidForceMax),

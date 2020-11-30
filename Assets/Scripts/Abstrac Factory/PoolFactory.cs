@@ -69,7 +69,7 @@ namespace Asteroids
         
         protected void ActivatePoolObject(Transform transform, Vector2 position, Vector2 force, float torque)
         {
-            transform.gameObject.SetActive(true);            
+            transform.gameObject.SetActive(true);
             transform.localPosition = position;
             transform.SetParent(null);
             

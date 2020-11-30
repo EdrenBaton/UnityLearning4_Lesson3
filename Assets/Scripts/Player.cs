@@ -21,7 +21,7 @@ namespace Asteroids
             var moveTransform = new AccelerationMove(transform, _speed, _acceleration);
             var rotation = new RotationShip(transform);
             _ship = new Ship(moveTransform, rotation);
-            _bulletPool = new BulletPool(10, _barrel.position, _barrel.up * _force);
+            _bulletPool = new BulletPool(10, _barrel, _force);
         }
 
         private void Update()

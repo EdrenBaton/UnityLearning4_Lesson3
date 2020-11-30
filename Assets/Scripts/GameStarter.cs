@@ -12,6 +12,9 @@ namespace Asteroids
         [SerializeField] private float _asteroidTorqueMin = -200.0f;
         [SerializeField] private float _asteroidTorqueMax = 200.0f;
         
+        private ConsoleHpViewer _hpViewer = new ConsoleHpViewer();
+        private ConsoleDestroyViewer _destroyiewer = new ConsoleDestroyViewer();
+        
         private void Start()
         {
             var enemyPool = new EnemyPool(5,
@@ -20,8 +23,14 @@ namespace Asteroids
                 _asteroidTorqueMin,
                 _asteroidTorqueMax);
             
-            enemyPool.GetFromPool("Asteroid1");            
-            enemyPool.GetFromPool("Asteroid2");
+            var e1 = enemyPool.GetFromPool("Asteroid1");
+            var e2 = enemyPool.GetFromPool("Asteroid2");
+            
+            _hpViewer.Add((IHitable) e1);
+            _hpViewer.Add((IHitable) e2);
+            
+            _destroyiewer.Add((IDestroyable) e1);
+            _destroyiewer.Add((IDestroyable) e2);
             
             // Enemy.CreateAsteroidEnemy(new Health(100.0f, 100.0f));
             //

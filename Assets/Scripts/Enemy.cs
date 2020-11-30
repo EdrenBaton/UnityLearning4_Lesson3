@@ -1,26 +1,33 @@
-﻿using Abstrac_Factory;
+﻿using System;
+using Abstrac_Factory;
 using Asteroids.Object_Pool;
 using UnityEngine;
 
 namespace Asteroids
 {
-    public abstract class Enemy : BasePoolableObject
+    public abstract class Enemy : BasePoolableObject, IDestroyable
     {
-        public static IEnemyFactory Factory;
+        [SerializeField] private float _health;
+        
+        public string Name { get; set; }
+        public event Action<IHitable> OnHit = f => {};
+        public event Action<IHitable> OnDestroy = f => {};
+        
         private Transform _rootPool;
-        private Health _health;
 
-        public Health Health
+        public float Health
         {
-            get
+            get => _health;
+            
+            set
             {
-                if (_health.Current <= 0.0f)
+                _health = value;
+                
+                if (_health <= 0.0f)
                 {
                     ReturnToPool();
                 }
-                return _health;
             }
-            protected set => _health = value;
         }
 
         public Transform RootPool
@@ -36,15 +43,6 @@ namespace Asteroids
                 return _rootPool;
             }
         }
-
-        public static Asteroid CreateAsteroidEnemy(Health hp)
-        {
-            var enemy = Instantiate(Resources.Load<Asteroid>("Enemy/Asteroid"));
-        
-            enemy.Health = hp;
-        
-            return enemy;
-        }
         
         private void ActiveEnemy(Vector3 position, Quaternion rotation)
         {
@@ -56,6 +54,8 @@ namespace Asteroids
 
         protected void ReturnToPool()
         {
+            OnDestroy(this);
+            
             transform.localPosition = Vector3.zero;
             transform.localRotation = Quaternion.identity;
             gameObject.SetActive(false);
@@ -65,6 +65,16 @@ namespace Asteroids
             {
                 Destroy(gameObject);
             }
+        }
+        public void Hit(float damage)
+        {
+            Health -= damage;
+            OnHit(this);
+        }
+
+        public void Destroy()
+        {
+            throw new NotImplementedException();
         }
     }
 }

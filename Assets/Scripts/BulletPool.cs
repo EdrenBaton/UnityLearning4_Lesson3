@@ -5,12 +5,12 @@ namespace Asteroids
 {
     public class BulletPool : PoolFactory
     {
-        private readonly Vector2 _position;
-        private readonly Vector2 _force;
+        private readonly Transform _barrel;
+        private readonly float _force;
 
-        public BulletPool(int capacityPool, Vector2 position, Vector2 force) : base(capacityPool)
+        public BulletPool(int capacityPool, Transform barrel, float force) : base(capacityPool)
         {
-            _position = position;
+            _barrel = barrel;
             _force = force;
         }
 
@@ -22,8 +22,8 @@ namespace Asteroids
                 case "Bullet":
                     result = (Bullet) GetFromPoolList(GetPoolList(type), type);
                     ActivatePoolObject(result.transform,
-                        _position,
-                        _force,
+                        _barrel.position,
+                        _barrel.up * _force,
                         0.0f);
                     break;
                 default:
