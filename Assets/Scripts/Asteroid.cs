@@ -1,8 +1,10 @@
-﻿namespace Asteroids
+﻿using UnityEngine;
+
+namespace Asteroids
 {
     public sealed class Asteroid : Enemy
-    {
-        public void DependencyInjectHealth(Health hp)
+    {        
+        public void DependencyInjectHealth(float hp)
         {
             Health = hp;
         }
